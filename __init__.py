@@ -1,6 +1,12 @@
 import bpy
 import time
 
+bl_info = {
+    "name": "Sponge Creator",
+    "blender": (2, 80, 0),
+    "category": "Object",
+}
+
 def deselect():
     for i in bpy.context.scene.objects:
         i.select_set(False)
@@ -99,9 +105,30 @@ def replicate(mainPart):
     bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
     return parts[0]
 
+class runSponge(bpy.types.Operator):
+    """Runs the fractal."""
+    bl_idname = "object.make_sponge_fractal"
+    bl_label = "Create layer of sponge fractal."
+    bl_options = {'REGISTER', 'UNDO'}
+    def execute(self, context):
+        replicate(bpy.context.active_object)
+        return {'FINISHED'}
+
 #bpy.ops.mesh.primitive_cube_add(size=3, location=(0,0,0))
 #main=bpy.context.active_object
 #fractalPart(main)
 #for i in range(2):
     #main=replicate(main)
-replicate(bpy.context.active_object)
+def menu_func(self, context):
+    self.layout.operator(runSponge.bl_idname)
+
+def register():
+    bpy.utils.register_class(runSponge)
+    bpy.types.VIEW3D_MT_object.append(menu_func)
+
+def unregister():
+    bpy.utils.unregister_class(runSponge)
+
+if __name__ == "__main__":
+    register()
+    print("Registered!")
