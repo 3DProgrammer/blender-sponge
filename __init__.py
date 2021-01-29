@@ -108,7 +108,7 @@ def replicate(mainPart):
 class runSponge(bpy.types.Operator):
     """Runs the fractal."""
     bl_idname = "object.make_sponge_fractal"
-    bl_label = "Create layer of sponge fractal."
+    bl_label = "Create layer of sponge fractal"
     bl_options = {'REGISTER', 'UNDO'}
     def execute(self, context):
         replicate(bpy.context.active_object)
